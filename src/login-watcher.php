@@ -26,6 +26,7 @@ class LoginWatcher {
 
     $sql = "CREATE TABLE " . $table_name . " (
       ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+      user_login varchar(255) NOT NULL,
       user_id bigint(20) UNSIGNED NOT NULL,
       ip varchar(43),
       user_agent text,
@@ -40,9 +41,19 @@ class LoginWatcher {
   /*
    * create table on activate
    */
-  // TODO: ログイン履歴の記録
   public static function saveLoginHistory($user_login, $current_user) {
+    global $wpdb;
 
+    $table_name = $wpdb->prefix . LOGIN_WATCHER_TABLE_NAME;
+
+    $history = array(
+      'user_login' => $user_login,
+      'user_id' => $current_user->ID,
+      'ip' => $_SERVER['REMOTE_ADDR'],
+      'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+    );
+    
+    $wpdb->insert($table_name, $history);
   }
 
   /*
@@ -59,5 +70,5 @@ class LoginWatcher {
 }
 
 register_activation_hook( __FILE__, 'LoginWatcher::activate');
-add_action('wp_login', 'LoginWatcher::saveHistory', 10, 2);
+add_action('wp_login', 'LoginWatcher::saveLoginHistory', 10, 2);
 add_action('admin_menu', 'LoginWatcher::showLoginHistoryMenu');
