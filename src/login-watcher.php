@@ -54,7 +54,7 @@ class LoginWatcher {
   }
 
   public static function showLoginHistoryMenu() {
-    add_menu_page('ログイン履歴', 'ログイン履歴', 'manage_options', 'login_watcher_login_history', 'LoginWatcher::showLoginHistory', 'dashicons-welcome-learn-more', 3);
+    add_menu_page('ログイン履歴', 'ログイン履歴', 'manage_options', 'login_watcher_login_history', 'LoginWatcher::showLoginHistory', 'dashicons-welcome-learn-more', 81);
   }
 }
 
