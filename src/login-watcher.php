@@ -23,11 +23,11 @@ class LoginWatcher {
 
     $charset_collate = $wpdb->get_charset_collate();
 
-    $sql = "CREATE TABLE " . self::tableName . " (
+    $sql = "CREATE TABLE " . self::tableName() . " (
       ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
       user_login varchar(255) NOT NULL,
       user_id bigint(20) UNSIGNED NOT NULL,
-      ip varchar(43),
+      remote_ip varchar(43),
       user_agent text,
       logged_in_at timestamp NOT NULL,
       UNIQUE KEY ID (ID)
@@ -46,7 +46,7 @@ class LoginWatcher {
     $history = array(
       'user_login' => $user_login,
       'user_id' => $current_user->ID,
-      'ip' => $_SERVER['REMOTE_ADDR'],
+      'remote_ip' => $_SERVER['REMOTE_ADDR'],
       'user_agent' => $_SERVER['HTTP_USER_AGENT'],
     );
     
@@ -65,7 +65,7 @@ class LoginWatcher {
     $result = $wpdb->get_results($sql);
     $histories = '';
     foreach ($result as $history) {
-      $histories .= '<tr><td>' . $history->logged_in_at. '</td><td>' . $history->user_login . '</td><td>' . $history->ip . '</td><td>' . $history->user_agent . '</td></tr>';
+      $histories .= '<tr><td>' . $history->logged_in_at. '</td><td>' . $history->user_login . '</td><td>' . $history->remote_ip . '</td><td>' . $history->user_agent . '</td></tr>';
     }
     $output = str_replace('%%login_histories%%', $histories, $template);
     echo $output;
