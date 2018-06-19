@@ -30,6 +30,14 @@ services:
              - 8080:80
         volumes:
              - ./tmp/phpmyadmin-sessions:/sessions
+    smtp:
+        image: schickling/mailcatcher
+        container_name: smtp
+        env_file: devenv/.env
+        ports:
+             - 1080:1080
+             - 1025:1025
+
 volumes:
     db-data:
         driver: local
