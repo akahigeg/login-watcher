@@ -1,0 +1,25 @@
+<h1>ログイン履歴</h1>
+<style>
+  .login-histories {
+    border-collapse: collapse;
+  }
+  .login-histories th {
+    text-align: left;
+    border: 1px solid gray;
+    padding: 5px;
+    background-color: #ccc;
+  }
+  .login-histories td {
+    border: 1px solid gray;
+    padding: 5px;
+  }
+</style>
+<table class="login-histories">
+  <tr>
+    <th>timestamp</th>
+    <th>user_login</th>
+    <th>ip</th>
+    <th>user_agent</th>
+  </tr>
+  %%login_histories%%
+</table>

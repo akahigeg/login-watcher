@@ -39,7 +39,7 @@ class LoginWatcher {
   }
 
   /*
-   * create table on activate
+   * save login history at logged in.
    */
   public static function saveLoginHistory($user_login, $current_user) {
     global $wpdb;
@@ -57,11 +57,23 @@ class LoginWatcher {
   }
 
   /*
-   * create table on activate
+   * list of login histories.
    */
-  // TODO: ログイン履歴を管理画面で一覧表示
   public static function showLoginHistory() {
-    echo "ok";
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . LOGIN_WATCHER_TABLE_NAME;
+
+    $template = file_get_contents(plugin_dir_path(__FILE__) . 'templates/login_history.html');
+
+    $sql = "SELECT * FROM " . $table_name;
+    $result = $wpdb->get_results($sql);
+    $histories = '';
+    foreach ($result as $history) {
+      $histories .= '<tr><td>' . $history->logged_in_at. '</td><td>' . $history->user_login . '</td><td>' . $history->ip . '</td><td>' . $history->user_agent . '</td></tr>';
+    }
+    $output = str_replace('%%login_histories%%', $histories, $template);
+    echo $output;
   }
 
   public static function showLoginHistoryMenu() {
