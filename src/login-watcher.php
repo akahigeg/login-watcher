@@ -21,10 +21,9 @@ class LoginWatcher {
   public static function activate() {
     global $wpdb;
 
-    $table_name = $wpdb->prefix . LOGIN_WATCHER_TABLE_NAME;
     $charset_collate = $wpdb->get_charset_collate();
 
-    $sql = "CREATE TABLE " . $table_name . " (
+    $sql = "CREATE TABLE " . self::tableName . " (
       ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
       user_login varchar(255) NOT NULL,
       user_id bigint(20) UNSIGNED NOT NULL,
@@ -44,8 +43,6 @@ class LoginWatcher {
   public static function saveLoginHistory($user_login, $current_user) {
     global $wpdb;
 
-    $table_name = $wpdb->prefix . LOGIN_WATCHER_TABLE_NAME;
-
     $history = array(
       'user_login' => $user_login,
       'user_id' => $current_user->ID,
@@ -53,7 +50,7 @@ class LoginWatcher {
       'user_agent' => $_SERVER['HTTP_USER_AGENT'],
     );
     
-    $wpdb->insert($table_name, $history);
+    $wpdb->insert(self::tableName(), $history);
   }
 
   /*
@@ -62,11 +59,9 @@ class LoginWatcher {
   public static function showLoginHistory() {
     global $wpdb;
 
-    $table_name = $wpdb->prefix . LOGIN_WATCHER_TABLE_NAME;
-
     $template = file_get_contents(plugin_dir_path(__FILE__) . 'templates/login_history.html');
 
-    $sql = "SELECT * FROM " . $table_name;
+    $sql = "SELECT * FROM " . self::tableName();
     $result = $wpdb->get_results($sql);
     $histories = '';
     foreach ($result as $history) {
@@ -78,6 +73,11 @@ class LoginWatcher {
 
   public static function showLoginHistoryMenu() {
     add_menu_page('ログイン履歴', 'ログイン履歴', 'manage_options', 'login_watcher_login_history', 'LoginWatcher::showLoginHistory', 'dashicons-welcome-learn-more', 81);
+  }
+
+  private static function tableName() {
+    global $wpdb;
+    return $wpdb->prefix . LOGIN_WATCHER_TABLE_NAME;
   }
 }
 
