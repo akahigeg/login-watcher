@@ -12,3 +12,9 @@ msgstr ""
 
 msgid "Login History"
 msgstr "ログイン履歴"
+
+msgid "Recent"
+msgstr "最新"
+
+msgid "record"
+msgstr "件"
