@@ -51,19 +51,6 @@ class LoginWatcher {
     );
     
     $wpdb->insert(self::tableName(), $history);
-
-    // TODO: ログイン確認メール
-    // * サブジェクトにサイト名を含める
-    // * 本文のテンプレート
-    $subject = 'Confirm WordPress login.';
-    $body = 'Logged in!';
-    if (function_exists('mb_send_mail')) {
-      $headers = "From: no_reply@example.com\nContent-Type: text/html;charset=ISO-2022-JP\nX-Mailer: PHP/" . phpversion();
-      mb_send_mail($current_user->user_email, $subject, $body, $headers);
-    } else {
-      $headers = "From: no_reply@example.com\nContent-Type: text/html\nX-Mailer: PHP/" . phpversion();
-      mail($current_user->user_email, $subject, $body, $headers);
-    }
   }
 
   /*
