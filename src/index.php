@@ -7,12 +7,18 @@ Author: akahige
 Author URI: https://www.brassworks.jp/
 Version: 20180619
 Text Domain: login-watcher
+Domain Path: /languages/
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
 require_once(plugin_dir_path(__FILE__) . 'constants.php');
 add_option('login_watcher_table_name', LOGIN_WATCHER_TABLE_NAME);
+
+function login_watcher_load_textdomain() {
+  load_plugin_textdomain('login-watcher', false, dirname( plugin_basename( __FILE__ )) . '/languages/');
+}
+add_action('plugins_loaded', 'login_watcher_load_textdomain');
 
 class LoginWatcher {
   /*
@@ -72,7 +78,7 @@ class LoginWatcher {
   }
 
   public static function showLoginHistoryMenu() {
-    $title = __('Login History', 'login_history');
+    $title = __('Login History', 'login-watcher');
     add_menu_page($title, $title, 'manage_options', 'login_watcher_login_history', 'LoginWatcher::showLoginHistory', 'dashicons-welcome-learn-more', 81);
   }
 
