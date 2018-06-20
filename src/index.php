@@ -57,24 +57,53 @@ class LoginWatcher {
    * list of login histories.
    */
   public static function showLoginHistory() {
-    global $wpdb;
-
     $template = file_get_contents(plugin_dir_path(__FILE__) . 'templates/login_history.html');
 
-    $sql = "SELECT * FROM " . self::tableName();
-    $result = $wpdb->get_results($sql);
+    $result = self::queryLoginHistories('desc', 25);
     $histories = '';
     foreach ($result as $history) {
       $histories .= '<tr><td>' . $history->logged_in_at. '</td><td>' . $history->user_login . '</td><td>' . $history->remote_ip . '</td><td>' . $history->user_agent . '</td></tr>';
     }
-    $output = str_replace('%%login_histories%%', $histories, $template);
-    echo $output;
 
-    // TODO: ログイン履歴のダウンロード
+    $output = str_replace('%%page_title%%', get_admin_page_title(), $template);
+    $output = str_replace('%%login_histories%%', $histories, $output);
+    $output = str_replace('%%csv_download_link%%', plugin_dir_url(__FILE__) . 'download.php', $output);
+    echo $output;
   }
 
   public static function showLoginHistoryMenu() {
-    add_menu_page('ログイン履歴', 'ログイン履歴', 'manage_options', 'login_watcher_login_history', 'LoginWatcher::showLoginHistory', 'dashicons-welcome-learn-more', 81);
+    $title = __('Login History', 'login_history');
+    add_menu_page($title, $title, 'manage_options', 'login_watcher_login_history', 'LoginWatcher::showLoginHistory', 'dashicons-welcome-learn-more', 81);
+  }
+
+  public static function downloadCSV() {
+    $csv_header = 'timestamp,user_login,remote_ip,user_agent';
+
+    $lines = array();
+    $result = self::queryLoginHistories();
+    foreach ($result as $history) {
+      $output_values = array($history->logged_in_at, $history->user_login, $history->remote_ip, $history->user_agent);
+      $lines[] = implode(',', array_map(function($col) { return '"' . $col . '"'; }, $output_values));
+    }
+
+    $csv_body = implode("\n", $lines) . "\n";
+
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename=login_history.csv'); 
+
+    echo $csv_header;
+    echo $csv_body;
+  }
+
+  private static function queryLoginHistories($order = 'asc', $limit = 0) {
+    global $wpdb;
+
+    $sql = "SELECT * FROM " . self::tableName() . " order by logged_in_at " . $order;
+    if (!empty($limit)) {
+      $sql .= " limit " . $limit;
+    }
+
+    return $wpdb->get_results($sql);
   }
 
   private static function tableName() {

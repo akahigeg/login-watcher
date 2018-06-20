@@ -1,4 +1,4 @@
-<h1>ログイン履歴</h1>
+<h1>%%page_title%%</h1>
 <style>
   .login-histories {
     border-collapse: collapse;
@@ -13,13 +13,24 @@
     border: 1px solid gray;
     padding: 5px;
   }
+
+  .login-history-download {
+    margin-top: 10px;
+    text-align: left;
+  }
 </style>
-<table class="login-histories">
-  <tr>
-    <th>timestamp</th>
-    <th>user_login</th>
-    <th>remote_ip</th>
-    <th>user_agent</th>
-  </tr>
-  %%login_histories%%
-</table>
+
+<div>
+  <table class="login-histories">
+    <tr>
+      <th>timestamp</th>
+      <th>user_login</th>
+      <th>remote_ip</th>
+      <th>user_agent</th>
+    </tr>
+    %%login_histories%%
+  </table>
+</div>
+<div class="login-history-download">
+  <a href="%%csv_download_link%%" class="button">Download CSV</a>
+</div>
