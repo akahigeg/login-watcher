@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: login-watcher\n"
+"Project-Id-Version: simple-login-history\n"
 "POT-Creation-Date: 2018-06-20-15:00:00+0900\n"
 "PO-Revision-Date: 2018-06-20-15:00:00+0900\n"
 "Last-Translator: akahigeg\n"

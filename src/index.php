@@ -1,24 +1,27 @@
 <?php
 /*
-Plugin Name: Login Watcher
+Plugin Name: Simple Login History
 Plugin URI: https://www.brassworks.jp/
 Description: A simple login history plugin.
 Author: akahige
 Author URI: https://www.brassworks.jp/
-Version: 20180619
-Text Domain: login-watcher
+Version: 20180621
+Text Domain: simple-login-history
 Domain Path: /languages/
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
-function login_watcher_load_textdomain() {
-  load_plugin_textdomain('login-watcher', false, dirname( plugin_basename( __FILE__ )) . '/languages/');
+function simple_login_history_load_textdomain() {
+  load_plugin_textdomain('simple-login-history', false, dirname( plugin_basename( __FILE__ )) . '/languages/');
 }
-add_action('plugins_loaded', 'login_watcher_load_textdomain');
+add_action('plugins_loaded', 'simple_login_history_load_textdomain');
 
-class LoginWatcher {
-  const LOGIN_WATCHER_TABLE_NAME = 'login_watcher_histories';
+/*
+ * 
+ */
+class SimpleLoginHistory {
+  const SIMPLE_LOGIN_HISTORY_TABLE_NAME= 'login_histories';
 
   /*
    * Create login history table on activate.
@@ -67,8 +70,8 @@ class LoginWatcher {
    * Show menu item of login histories.
    */
   public static function showLoginHistoryMenu() {
-    $title = __('Login History', 'login-watcher');
-    add_menu_page($title, $title, 'manage_options', 'login_watcher_login_history', 'LoginWatcher::showLoginHistory', 'dashicons-welcome-learn-more', 81);
+    $title = __('Login History', 'simple-login-history');
+    add_menu_page($title, $title, 'manage_options', 'simple_login_history_login_history', 'SimpleLoginHistory::showLoginHistory', 'dashicons-welcome-learn-more', 81);
   }
 
   /*
@@ -87,8 +90,8 @@ class LoginWatcher {
 
     $output = str_replace('%%page_title%%', get_admin_page_title(), $template);
     $output = str_replace('%%login_histories%%', $histories, $output);
-    $output = str_replace('%%Recent%%', __('Recent', 'login-watcher'), $output);
-    $output = str_replace('%%record%%', __('record', 'login-watcher'), $output);
+    $output = str_replace('%%Recent%%', __('Recent', 'simple-login-history'), $output);
+    $output = str_replace('%%record%%', __('record', 'simple-login-history'), $output);
     $output = str_replace('%%csv_download_link%%', plugin_dir_url(__FILE__) . 'download.php', $output);
     echo $output;
   }
@@ -99,7 +102,7 @@ class LoginWatcher {
    * CSV contains whole login histories.
    */
   public static function downloadCSV() {
-    $csv_header = 'timestamp,user_login,remote_ip,user_agent';
+    $csv_header = 'timestamp,user_login,remote_ip,user_agent\n';
 
     $lines = array();
     $results = self::queryLoginHistories();
@@ -142,10 +145,10 @@ class LoginWatcher {
   */
   private static function tableName() {
     global $wpdb;
-    return $wpdb->prefix . self::LOGIN_WATCHER_TABLE_NAME;
+    return $wpdb->prefix . self::SIMPLE_LOGIN_HISTORY_TABLE_NAME;
   }
 }
 
-register_activation_hook( __FILE__, 'LoginWatcher::activate');
-add_action('wp_login', 'LoginWatcher::saveLoginHistory', 10, 2);
-add_action('admin_menu', 'LoginWatcher::showLoginHistoryMenu');
+register_activation_hook( __FILE__, 'SimpleLoginHistory::activate');
+add_action('wp_login', 'SimpleLoginHistory::saveLoginHistory', 10, 2);
+add_action('admin_menu', 'SimpleLoginHistory::showLoginHistoryMenu');

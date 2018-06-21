@@ -5,5 +5,5 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 
 // Drop table.
 global $wpdb;
-$table_name = $wpdb->prefix . LoginWatcher::LOGIN_WATCHER_TABLE_NAME;
+$table_name = $wpdb->prefix . SimpleLoginHistory::SIMPLE_LOGIN_HISTORY_TABLE_NAME;
 $wpdb->query("DROP TABLE " . $table_name . ";");
