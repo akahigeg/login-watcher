@@ -69,9 +69,9 @@ class SimpleLoginHistory {
   /*
    * Show menu item of login histories.
    */
-  public static function showLoginHistoryMenu() {
+  public static function showMenuItem() {
     $title = __('Login History', 'simple-login-history');
-    add_menu_page($title, $title, 'manage_options', 'simple_login_history_login_history', 'SimpleLoginHistory::showLoginHistory', 'dashicons-welcome-learn-more', 81);
+    add_menu_page($title, $title, 'manage_options', 'simple_login_history_show_list', 'SimpleLoginHistory::showList', 'dashicons-welcome-learn-more', 81);
   }
 
   /*
@@ -79,7 +79,7 @@ class SimpleLoginHistory {
    * 
    * Output recent 25 records of login histories.
    */
-  public static function showLoginHistory() {
+  public static function showList() {
     $template = file_get_contents(plugin_dir_path(__FILE__) . 'templates/login_history.html');
 
     $results = self::queryLoginHistories('desc', 25);
@@ -102,7 +102,7 @@ class SimpleLoginHistory {
    * CSV contains whole login histories.
    */
   public static function downloadCSV() {
-    $csv_header = 'timestamp,user_login,remote_ip,user_agent\n';
+    $csv_header = "timestamp,user_login,remote_ip,user_agent\n";
 
     $lines = array();
     $results = self::queryLoginHistories();
@@ -151,4 +151,4 @@ class SimpleLoginHistory {
 
 register_activation_hook( __FILE__, 'SimpleLoginHistory::activate');
 add_action('wp_login', 'SimpleLoginHistory::saveLoginHistory', 10, 2);
-add_action('admin_menu', 'SimpleLoginHistory::showLoginHistoryMenu');
+add_action('admin_menu', 'SimpleLoginHistory::showMenuItem');
