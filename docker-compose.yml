@@ -15,7 +15,8 @@ services:
             - ./devenv/plugins:/var/www/html/wp-content/plugins
             - ./devenv/languages:/var/www/html/wp-content/languages
             - ./tmp/wp-content-uploads:/var/www/html/wp-content/uploads
-            - ./src:/var/www/html/wp-content/plugins/login-watcher
+            - ./tmp/http-logs:/var/log/apache2
+            - ./src:/var/www/html/wp-content/plugins/simple-login-history
     db:
         image: mysql:latest
         env_file: devenv/.env
