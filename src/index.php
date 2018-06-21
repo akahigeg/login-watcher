@@ -38,7 +38,8 @@ class SimpleLoginHistory {
       remote_ip varchar(43),
       user_agent text,
       logged_in_at timestamp NOT NULL,
-      UNIQUE KEY ID (ID)
+      UNIQUE KEY ID (ID),
+      INDEX (logged_in_at)
     ) CHARACTER SET ". $charset_collate . ";";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -67,7 +68,7 @@ class SimpleLoginHistory {
   }
 
   /*
-   * Show menu item of login histories.
+   * Add link of login historiy to admin menu.
    */
   public static function showMenuItem() {
     $title = __('Login History', 'simple-login-history');
