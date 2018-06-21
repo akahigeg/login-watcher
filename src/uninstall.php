@@ -3,10 +3,6 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
   die();
 }
 
-if (!defined('LOGIN_WATCHER_TABLE_NAME')) {
-  die();
-}
-
 // Drop table.
 global $wpdb;
 $table_name = $wpdb->prefix . LoginWatcher::LOGIN_WATCHER_TABLE_NAME;

@@ -43,7 +43,7 @@ class LoginWatcher {
   }
 
   /*
-   * Save login history to DB at logged in.
+   * Save login history to DB at user login.
    * 
    * A history contains Login ID, WP_User ID, Remote IP and UserAgent.
    * 
