@@ -21,15 +21,13 @@ add_action('plugins_loaded', 'simple_login_history_load_textdomain');
  * 
  */
 class SimpleLoginHistory {
-  const SIMPLE_LOGIN_HISTORY_TABLE_NAME= 'login_histories';
+  const SIMPLE_LOGIN_HISTORY_TABLE_NAME = 'login_histories';
 
   /*
    * Create login history table on activate.
   */
   public static function activate() {
     global $wpdb;
-
-    $charset_collate = $wpdb->get_charset_collate();
 
     $sql = "CREATE TABLE " . self::tableName() . " (
       ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -40,7 +38,7 @@ class SimpleLoginHistory {
       logged_in_at timestamp NOT NULL,
       UNIQUE KEY ID (ID),
       INDEX (logged_in_at)
-    ) CHARACTER SET ". $charset_collate . ";";
+    );";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
